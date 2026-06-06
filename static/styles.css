@@ -147,12 +147,26 @@ textarea {
 }
 
 .app-shell {
-  height: 100vh;
-  overflow: hidden;
-  display: none;
+  display: grid;
   grid-template-columns: 320px 1fr;
   grid-template-rows: 72px 1fr;
   min-height: 100dvh;
+  height: 100dvh;
+  overflow: hidden;
+}
+
+.main {
+  padding: var(--space-6);
+  overflow-y: auto;
+  min-height: 0;
+}
+
+.main-grid {
+  display: grid;
+  gap: var(--space-5);
+  max-width: 1040px;
+  margin: 0 auto;
+  min-height: min-content;
 }
 .app-shell.active { display: grid; }
 .topbar {
