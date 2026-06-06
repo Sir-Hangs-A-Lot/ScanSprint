@@ -63,6 +63,11 @@ const fontSizeValue = $('fontSizeValue');
 const readerBgValue = $('readerBgValue');
 const readerFgValue = $('readerFgValue');
 const readerAccentValue = $('readerAccentValue');
+const wpmInput = $('wpmInput');
+const fontSizeInput = $('fontSizeInput');
+const readerBgHex = $('readerBgHex');
+const readerFgHex = $('readerFgHex');
+const readerAccentHex = $('readerAccentHex');
 
 function iconMarkup(theme) {
   return theme === 'dark'
@@ -126,6 +131,22 @@ function applyReaderStyles() {
   document.documentElement.style.setProperty('--reader-fg', state.readerFg);
   document.documentElement.style.setProperty('--reader-accent', state.readerAccent);
   wordFrame.style.fontSize = `${state.fontSize}px`;
+
+  wpmControl.value = state.wpm;
+  wpmInput.value = state.wpm;
+
+  fontSizeControl.value = state.fontSize;
+  fontSizeInput.value = state.fontSize;
+
+  readerBgControl.value = state.readerBg;
+  readerBgHex.value = state.readerBg;
+
+  readerFgControl.value = state.readerFg;
+  readerFgHex.value = state.readerFg;
+
+  readerAccentControl.value = state.readerAccent;
+  readerAccentHex.value = state.readerAccent;
+
   wpmValue.textContent = `${state.wpm} WPM`;
   fontSizeValue.textContent = `${state.fontSize} px`;
   readerBgValue.textContent = state.readerBg;
@@ -147,6 +168,15 @@ function nextDelay(word) {
   if (/[.!?]$/.test(word)) return base * 1.8;
   if (word.length >= 9) return base * 1.18;
   return base;
+}
+
+function clamp(value, min, max) {
+  return Math.min(Math.max(value, min), max);
+}
+
+function normalizeHex(value) {
+  const v = value.trim();
+  return /^#([0-9a-fA-F]{6})$/.test(v) ? v.toLowerCase() : null;
 }
 
 function tickReader() {
@@ -318,6 +348,58 @@ $('themeToggleApp').addEventListener('click', toggleTheme);
 document.addEventListener('fullscreenchange', updateFullscreenButton);
 
 wpmControl.addEventListener('input', (e) => { state.wpm = Number(e.target.value); applyReaderStyles(); });
+wpmControl.addEventListener('input', (e) => {
+  state.wpm = clamp(Number(e.target.value), 1, 900);
+  applyReaderStyles();
+});
+
+wpmInput.addEventListener('change', (e) => {
+  state.wpm = clamp(Number(e.target.value || state.wpm), 1, 900);
+  applyReaderStyles();
+});
+
+fontSizeControl.addEventListener('input', (e) => {
+  state.fontSize = clamp(Number(e.target.value), 28, 200);
+  applyReaderStyles();
+});
+
+fontSizeInput.addEventListener('change', (e) => {
+  state.fontSize = clamp(Number(e.target.value || state.fontSize), 28, 200);
+  applyReaderStyles();
+});
+
+readerBgControl.addEventListener('input', (e) => {
+  state.readerBg = e.target.value;
+  applyReaderStyles();
+});
+
+readerFgControl.addEventListener('input', (e) => {
+  state.readerFg = e.target.value;
+  applyReaderStyles();
+});
+
+readerAccentControl.addEventListener('input', (e) => {
+  state.readerAccent = e.target.value;
+  applyReaderStyles();
+});
+
+readerBgHex.addEventListener('change', (e) => {
+  const hex = normalizeHex(e.target.value);
+  if (hex) state.readerBg = hex;
+  applyReaderStyles();
+});
+
+readerFgHex.addEventListener('change', (e) => {
+  const hex = normalizeHex(e.target.value);
+  if (hex) state.readerFg = hex;
+  applyReaderStyles();
+});
+
+readerAccentHex.addEventListener('change', (e) => {
+  const hex = normalizeHex(e.target.value);
+  if (hex) state.readerAccent = hex;
+  applyReaderStyles();
+});
 fontSizeControl.addEventListener('input', (e) => { state.fontSize = Number(e.target.value); applyReaderStyles(); });
 readerBgControl.addEventListener('input', (e) => { state.readerBg = e.target.value; applyReaderStyles(); });
 readerFgControl.addEventListener('input', (e) => { state.readerFg = e.target.value; applyReaderStyles(); });
