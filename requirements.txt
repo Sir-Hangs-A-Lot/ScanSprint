@@ -3,3 +3,6 @@ uvicorn[standard]==0.30.6
 python-multipart==0.0.9
 pymupdf==1.26.0
 pydantic==2.8.2
+ebooklib==0.18
+beautifulsoup4==4.12.3
+lxml==5.2.2
