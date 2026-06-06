@@ -147,6 +147,8 @@ textarea {
 }
 
 .app-shell {
+  height: 100vh;
+  overflow: hidden;
   display: none;
   grid-template-columns: 320px 1fr;
   grid-template-rows: 72px 1fr;
@@ -161,13 +163,20 @@ textarea {
   backdrop-filter: blur(18px);
 }
 .sidebar {
+  height: calc(100vh - 72px); /* adjust based on topbar height */
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
   padding: var(--space-5);
   border-right: 1px solid color-mix(in oklab, var(--color-text) 10%, transparent);
   background: color-mix(in oklab, var(--color-surface) 95%, transparent);
   overflow-y: auto;
 }
 .main { padding: var(--space-6); overflow-y: auto; }
-.sidebar-group { margin-bottom: var(--space-5); }
+.sidebar-group { 
+  margin-bottom: var(--space-5); 
+  min-height: 0;
+}
 .label { font-size: var(--text-xs); text-transform: uppercase; letter-spacing: 0.08em; color: var(--color-text-faint); margin-bottom: var(--space-3); }
 .document-meta {
   padding: var(--space-4); border-radius: var(--radius-lg);
@@ -248,4 +257,10 @@ textarea {
   .main, .topbar { padding: var(--space-4); }
   .control-grid { grid-template-columns: 1fr; }
   .reader-stage { min-height: 220px; }
+}
+#sidebarSections {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  padding-right: 0.5rem;
 }
