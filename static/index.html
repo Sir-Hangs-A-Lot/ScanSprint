@@ -43,13 +43,13 @@
           <div>
             <div class="badge">Upload</div>
             <h2>Import a file</h2>
-            <p class="muted">Use a PDF or TXT file. The parser is text-based and intentionally ignores image regions.</p>
+            <p class="muted">Use a PDF, TXT, or EPUB file. The parser is text-based and works best with text-first documents.</p>
           </div>
           <label class="upload-zone">
-            <input type="file" id="fileInput" accept=".pdf,.txt,text/plain,application/pdf" />
+            <input type="file" id="fileInput" accept=".pdf,.txt,.epub,text/plain,application/pdf,application/epub+zip" />
             <div>
               <strong>Choose or drop a file</strong>
-              <p class="muted">Best with text-first PDFs rather than scanned images.</p>
+              <p class="muted">Best with text-first PDFs and standard reflowable EPUB files.</p>
               <p class="tiny" id="fileName">No file selected yet.</p>
             </div>
           </label>
