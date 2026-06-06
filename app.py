@@ -7,6 +7,9 @@ from pathlib import Path
 from typing import List
 
 import fitz
+import ebooklib
+from bs4 import BeautifulSoup
+from ebooklib import epub
 from fastapi import FastAPI, File, HTTPException, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse
@@ -92,14 +95,20 @@ async def parse_file(file: UploadFile = File(...)) -> DocumentOut:
     filename = file.filename or "uploaded-file"
     suffix = Path(filename).suffix.lower()
     raw = await file.read()
-    if suffix not in {".pdf", ".txt"}:
-        raise HTTPException(status_code=400, detail="Only PDF and TXT files are supported in this starter app.")
+
+    if suffix not in {".pdf", ".txt", ".epub"}:
+        raise HTTPException(status_code=400, detail="Only PDF, TXT, and EPUB files are supported.")
+
     if suffix == ".pdf":
         text = extract_pdf_text(raw)
         source_type = "PDF document"
+    elif suffix == ".epub":
+        text = extract_epub_text(raw)
+        source_type = "EPUB document"
     else:
         text = raw.decode("utf-8", errors="ignore")
         source_type = "Text file"
+
     return build_document(text, filename, source_type)
 
 
@@ -131,6 +140,41 @@ def extract_pdf_text(raw: bytes) -> str:
         page_texts.append("\n\n".join(lines))
     return "\n\n".join(page_texts)
 
+def extract_epub_text(raw: bytes) -> str:
+    temp_name = f"temp-{uuid.uuid4()}.epub"
+    temp_path = BASE_DIR / temp_name
+    temp_path.write_bytes(raw)
+
+    try:
+        book = epub.read_epub(str(temp_path))
+        sections = []
+
+        for item in book.get_items():
+            if item.get_type() != ebooklib.ITEM_DOCUMENT:
+                continue
+
+            soup = BeautifulSoup(item.get_content(), "lxml")
+            for tag in soup(["script", "style", "nav"]):
+                tag.decompose()
+
+            text = soup.get_text("\n", strip=True)
+            cleaned_lines = []
+            for line in text.splitlines():
+                cleaned = clean_line(line)
+                if not cleaned:
+                    continue
+                if looks_like_caption(cleaned) or looks_like_reference(cleaned):
+                    continue
+                cleaned_lines.append(cleaned)
+
+            if cleaned_lines:
+                sections.append("\n".join(cleaned_lines))
+
+        return "\n\n".join(sections)
+
+    finally:
+        if temp_path.exists():
+            temp_path.unlink()
 
 def clean_line(value: str) -> str:
     return re.sub(r"\s+", " ", value).strip()
