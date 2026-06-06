@@ -157,23 +157,42 @@ The problem of reading long text quickly...\n"></textarea>
           <div class="control-grid">
             <div class="control">
               <label for="wpmControl"><span>Speed</span><span id="wpmValue">320 WPM</span></label>
-              <input type="range" id="wpmControl" min="1" max="900" step="10" value="120" />
+              <div class="control-inline">
+                <input type="range" id="wpmControl" min="1" max="900" step="1" value="320" />
+                <input type="number" id="wpmInput" min="1" max="900" step="1" value="320" />
+              </div>
             </div>
+            
             <div class="control">
               <label for="fontSizeControl"><span>Font size</span><span id="fontSizeValue">54 px</span></label>
-              <input type="range" id="fontSizeControl" min="28" max="200" step="1" value="54" />
+              <div class="control-inline">
+                <input type="range" id="fontSizeControl" min="28" max="200" step="1" value="54" />
+                <input type="number" id="fontSizeInput" min="28" max="200" step="1" value="54" />
+              </div>
             </div>
+            
             <div class="control">
               <label for="readerBgControl"><span>Reader background</span><span id="readerBgValue">#141414</span></label>
-              <input type="color" id="readerBgControl" value="#141414" />
+              <div class="control-inline">
+                <input type="color" id="readerBgControl" value="#141414" />
+                <input type="text" id="readerBgHex" value="#141414" />
+              </div>
             </div>
+            
             <div class="control">
               <label for="readerFgControl"><span>Text color</span><span id="readerFgValue">#f7f7f7</span></label>
-              <input type="color" id="readerFgControl" value="#f7f7f7" />
+              <div class="control-inline">
+                <input type="color" id="readerFgControl" value="#f7f7f7" />
+                <input type="text" id="readerFgHex" value="#f7f7f7" />
+              </div>
             </div>
+            
             <div class="control">
               <label for="readerAccentControl"><span>Highlight color</span><span id="readerAccentValue">#ef4444</span></label>
-              <input type="color" id="readerAccentControl" value="#ef4444" />
+              <div class="control-inline">
+                <input type="color" id="readerAccentControl" value="#ef4444" />
+                <input type="text" id="readerAccentHex" value="#ef4444" />
+              </div>
             </div>
           </div>
         </section>
