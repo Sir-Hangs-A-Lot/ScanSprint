@@ -326,12 +326,52 @@ textarea {
   .app-shell { grid-template-columns: 280px 1fr; }
 }
 @media (max-width: 860px) {
-  .app-shell { grid-template-columns: 1fr; grid-template-rows: auto auto 1fr; }
-  .sidebar { border-right: none; border-bottom: 1px solid color-mix(in oklab, var(--color-text) 10%, transparent); max-height: 40dvh; }
-  .landing { padding: var(--space-4); }
-  .main, .topbar { padding: var(--space-4); }
-  .control-grid { grid-template-columns: 1fr; }
-  .reader-stage { min-height: 220px; }
+  html, body {
+    height: 100%;
+  }
+
+  body {
+    overflow: hidden;
+  }
+
+  .app-shell {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto minmax(0, 1fr);
+    height: 100dvh;
+    min-height: 100dvh;
+    overflow: hidden;
+  }
+
+  .sidebar,
+  .main {
+    min-height: 0;
+  }
+
+  .sidebar {
+    border-right: none;
+    border-bottom: 1px solid color-mix(in oklab, var(--color-text) 10%, transparent);
+    max-height: 40dvh;
+    overflow: hidden;
+  }
+
+  .main {
+    padding: var(--space-4);
+    overflow-y: auto;
+    overflow-x: hidden;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .topbar {
+    padding: var(--space-4);
+  }
+
+  .control-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .reader-stage {
+    min-height: 220px;
+  }
 }
 #sidebarSections {
   flex: 1;
